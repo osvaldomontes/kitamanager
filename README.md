@@ -1,28 +1,60 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
 
-# Flask + Vercel
+# Kita Manager
 
-This example shows how to use Flask 3 on Vercel with Serverless Functions using the [Python Runtime](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python).
+A Flask web application for managing static blogs powered by Zola and GitHub Pages.
 
-## Demo
+## Features
 
-https://flask-python-template.vercel.app/
+- GitHub authentication using personal access tokens
+- Create new blogs from a template repository
+- Manage blog configuration (config.toml)
+- Create, edit, and delete blog posts
+- Automatic GitHub Actions setup for deployment
+- Support for blog customization including:
+  - Site metadata
+  - Author profile
+  - Social links
+  - Navigation menu
+  - Footer information
+  - Syntax highlighting
+  - Math and diagram support
+  - Comments system
 
-## How it Works
+## Requirements
 
-This example uses the Web Server Gateway Interface (WSGI) with Flask to enable handling requests on Vercel with Serverless Functions.
+- Python 3.6+
+- Flask
+- requests
+- toml
+- PyNaCl (optional, for GitHub Actions secret setup)
 
-## Running Locally
+## Setup
 
+1. Clone the repository
 ```bash
-npm i -g vercel
-vercel dev
+git clone https://github.com/Daradege/kitamanager.git
+cd kitamanager
 ```
 
-Your Flask application is now available at `http://localhost:3000`.
+2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
 
-## One-Click Deploy
+3. Run the application
+```bash
+python -m flask run --host=0.0.0.0 --port=5000
+```
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+4. Access the application at `http://localhost:5000`
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+## Usage
+
+1. Generate a GitHub personal access token with repo scope
+2. Log in to the application using your token
+3. Create a new blog or select an existing repository
+4. Manage your blog content through the web interface
+
+## License
+
+MIT License

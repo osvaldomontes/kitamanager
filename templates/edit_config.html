@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen p-4">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 glass-effect">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">⚙️ Blog Settings</h1>
+                <a href="{{ url_for('manage_blog') }}" 
+                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    🔙 Back
+                </a>
+            </div>
+
+            <form method="POST" class="space-y-8">
+                
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">🌐 Main Settings</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Base URL</label>
+                            <input type="url" name="base_url" 
+                                   value="{{ config.base_url if config else '' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="https://username.github.io/repo-name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Site Title</label>
+                            <input type="text" name="title" 
+                                   value="{{ config.title if config else '' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="Your Blog Title">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                            <textarea name="description" rows="2"
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="A brief description about your blog">{{ config.description if config else '' }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Author</label>
+                            <input type="text" name="author" 
+                                   value="{{ config.author if config else '' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="Your Name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Default Language</label>
+                            <select name="default_language" 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="en" {{ 'selected' if config and config.default_language == 'en' else '' }}>English</option>
+                                <option value="fa" {{ 'selected' if config and config.default_language == 'fa' else '' }}>Persian</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">🔧 Features</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="math" 
+                                   {{ 'checked' if config and config.extra and config.extra.math else '' }}
+                                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm text-gray-700">Math Support (KaTeX)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="mermaid" 
+                                   {{ 'checked' if config and config.extra and config.extra.mermaid else '' }}
+                                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm text-gray-700">Diagram Support (Mermaid)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="comment" 
+                                   {{ 'checked' if config and config.extra and config.extra.comment else '' }}
+                                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm text-gray-700">Comments System</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="generate_feeds" 
+                                   {{ 'checked' if config and config.generate_feeds else '' }}
+                                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm text-gray-700">Generate RSS Feed</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">👤 Profile Settings</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Display Name</label>
+                            <input type="text" name="profile_name" 
+                                   value="{{ config.extra.profile.name if config and config.extra and config.extra.profile else '' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Avatar URL</label>
+                            <input type="url" name="avatar_url" 
+                                   value="{{ config.extra.profile.avatar_url if config and config.extra and config.extra.profile else 'icons/github.svg' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Biography</label>
+                            <textarea name="profile_bio" rows="3"
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">{{ config.extra.profile.bio if config and config.extra and config.extra.profile else '' }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">GitHub Link</label>
+                            <input type="url" name="github_url" 
+                                   value="{{ config.extra.profile.social[0].url if config and config.extra and config.extra.profile and config.extra.profile.social else '' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Website</label>
+                            <input type="url" name="website_url" 
+                                   value="{{ config.extra.profile.social[1].url if config and config.extra and config.extra.profile and config.extra.profile.social and config.extra.profile.social|length > 1 else '' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <label class="flex items-center md:col-span-2">
+                            <input type="checkbox" name="avatar_invert" 
+                                   {{ 'checked' if config and config.extra and config.extra.profile and config.extra.profile.avatar_invert else '' }}
+                                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm text-gray-700">Invert Avatar Colors in Dark Mode</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">🎨 Theme Settings</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Code Highlight Theme</label>
+                            <select name="highlight_theme" 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="base16-ocean-dark" {{ 'selected' if config and config.markdown and config.markdown.highlight_theme == 'base16-ocean-dark' else '' }}>Ocean Dark</option>
+                                <option value="base16-ocean-light" {{ 'selected' if config and config.markdown and config.markdown.highlight_theme == 'base16-ocean-light' else '' }}>Ocean Light</option>
+                                <option value="InspiredGitHub" {{ 'selected' if config and config.markdown and config.markdown.highlight_theme == 'InspiredGitHub' else '' }}>GitHub</option>
+                                <option value="Solarized (dark)" {{ 'selected' if config and config.markdown and config.markdown.highlight_theme == 'Solarized (dark)' else '' }}>Solarized Dark</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Social Media Image</label>
+                            <input type="text" name="social_image" 
+                                   value="{{ config.extra.social_image if config and config.extra else 'icons/github.svg' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">📄 Footer Settings</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Start Year</label>
+                            <input type="number" name="footer_since" 
+                                   value="{{ config.extra.footer.since if config and config.extra and config.extra.footer else '2025' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">License</label>
+                            <input type="text" name="footer_license" 
+                                   value="{{ config.extra.footer.license if config and config.extra and config.extra.footer else 'CC BY-SA 4.0' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">License URL</label>
+                            <input type="url" name="footer_license_url" 
+                                   value="{{ config.extra.footer.license_url if config and config.extra and config.extra.footer else 'https://creativecommons.org/licenses/by-sa/4.0/deed' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center">
+                    <button type="submit" 
+                            class="bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:from-green-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
+                        💾 Save Settings
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
